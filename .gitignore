@@ -1,0 +1,19 @@
+# ===== Java build output =====
+**/target/
+**/build/
+**/out/
+
+# ===== IDE files =====
+.idea/
+.vscode/
+**/*.iml
+.project
+.classpath
+.settings/
+
+# ===== OS junk =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
