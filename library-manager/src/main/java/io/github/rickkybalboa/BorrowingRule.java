@@ -8,6 +8,8 @@ public interface BorrowingRule {
 
     int getLoanPeriodDays();
 
+    int getRenewalLimit();
+
     BigDecimal calculateLateFee(LocalDate dueDate, LocalDate returnDate);
 
     boolean canRenew(int renewalsSoFar);

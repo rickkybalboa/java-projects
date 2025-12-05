@@ -14,8 +14,19 @@ public class SmallTester {
     book1.borrow();
     Helpers.print(LocalDate.now().toString());
     System.out.println(book1.getDueDate());
+    
+    for(int i = 0; i <= 5; i++) {
+        if(book1.renew())
+        Helpers.print("Renewed.");
+        else {
+            Helpers.print("Could not renew.");
+        }
+    }
+
+
     if(book1.returnItem()) {Helpers.print("Returned.");}
     Helpers.print(book1.getDueDate());
     Helpers.print(book1.getItemType());
+
     }
 }

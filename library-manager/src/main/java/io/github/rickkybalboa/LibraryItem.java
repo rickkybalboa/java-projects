@@ -76,13 +76,13 @@ public abstract class LibraryItem {
         return true;
     }
 
-      public boolean renew(LocalDate todayDate) {
+      public boolean renew() {
         if (!isBorrowed) return false;
 
         if(!borrowingRule.canRenew(renewalsSoFar)) {
             return false;
         }
-
+        LocalDate todayDate = LocalDate.now();
         dateDue = todayDate.plusDays(borrowingRule.getLoanPeriodDays());
         renewalsSoFar++;
         return true;

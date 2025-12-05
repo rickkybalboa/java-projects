@@ -8,9 +8,22 @@ import java.time.temporal.ChronoUnit;
 
 public class BookBorrowingRule implements BorrowingRule {
 
+    int renewalLimit = 2;
+    int loanPeriod = 21;
+
     @Override
     public int getLoanPeriodDays() {
-        return 21;
+        return loanPeriod;
+    }
+    
+    @Override
+    public int getRenewalLimit() {
+        return renewalLimit;
+    }
+
+    // Delete this?
+    public void setRenewalLimit(int newLimit) {
+        renewalLimit = newLimit;
     }
 
     @Override
@@ -27,7 +40,7 @@ public class BookBorrowingRule implements BorrowingRule {
 
     @Override
     public boolean canRenew(int renewalsSoFar) {
-        if (renewalsSoFar > 2) {
+        if (renewalsSoFar >= renewalLimit) {
             return false;
         } else {
             return true;
