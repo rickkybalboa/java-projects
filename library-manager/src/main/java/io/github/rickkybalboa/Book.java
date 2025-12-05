@@ -2,37 +2,42 @@ package io.github.rickkybalboa;
 
 import java.lang.UnsupportedOperationException;
 
+import java.time.LocalDate;
+
+
 public class Book extends LibraryItem {
 
-//private static final String itemType = "Book"; // Implement enum
+private String author;
 private String genre;
 
-    public Book(String id, String title, String genre) {
 
-        super(id, title, ItemType.BOOK);
+    public Book(String id, String author, String title, String genre) {
+
+        super(id, title, ItemType.BOOK, new BookBorrowingRule());
+
+        this.author = author;
+        this.genre = genre;
+    }
+
+
+    public void getAuthor() {
+        System.out.println(author);
     }
 
     public void getGenre() {
         System.out.println(genre);
     }
 
-    @Override
-    public void renewRule() {
-        // TODO: Implement
-        throw new UnsupportedOperationException("Not yet implemented.");       
-    }
 
     @Override
     public void setLateFee() {
-        // TODO: Implement
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
-    @Override
-    public void setDueDate() {
 
-    }
-
-
-    
+ /*    @Override
+    public ItemType getItemType() {
+        return ItemType.BOOK;
+    } */
 }
+

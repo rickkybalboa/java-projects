@@ -14,30 +14,21 @@ public abstract class LibraryItem {
     protected enum BorrowStatus {
         BORROWED, RETURNED, ALREADY_BORROWED, NO_CHANGE
     }
+    protected BorrowingRule borrowingRule;
+    protected int renewalsSoFar = 0;
 
 
     protected LibraryItem(String id,
         String title,
         ItemType itemType,
-        boolean isBorrowed,
-        LocalDate dateLastBorrowed,
-        LocalDate dateDue,
-        LocalDate dateLastReturned) {
+        BorrowingRule borrowingRule    
+    ) {
 
         this.id = id;
         this.title = title;
         this.itemType = itemType;
-        this.isBorrowed = isBorrowed;
-        this.dateLastBorrowed = dateLastBorrowed;
-        this.dateDue = dateDue;
-    }
-
-    protected LibraryItem(String id, String title, ItemType itemType) {
-        this(id,title, itemType, false,null,null, null);
-    }
-
-    public String printAllInfo() {
-        return toString();
+        this.borrowingRule = borrowingRule;
+        
     }
 
     public String getId() {
@@ -48,8 +39,8 @@ public abstract class LibraryItem {
         return title;
     }
 
-    public ItemType getItemType() {
-        return itemType;
+    public String getItemType() {
+        return itemType.toString();
     }
 
     public String getDueDate() {
@@ -68,6 +59,35 @@ public abstract class LibraryItem {
         else return BorrowStatus.RETURNED;
     }
 
+    public boolean borrow() {
+        if(isBorrowed) return false;
+
+        LocalDate todayDate = LocalDate.now();
+        dateDue = todayDate.plusDays(borrowingRule.getLoanPeriodDays());
+        isBorrowed = true;
+        return true;
+    }
+
+    public boolean returnItem() {
+        if(!isBorrowed) return false;
+
+        dateDue = null;
+        isBorrowed = false;
+        return true;
+    }
+
+      public boolean renew(LocalDate todayDate) {
+        if (!isBorrowed) return false;
+
+        if(!borrowingRule.canRenew(renewalsSoFar)) {
+            return false;
+        }
+
+        dateDue = todayDate.plusDays(borrowingRule.getLoanPeriodDays());
+        renewalsSoFar++;
+        return true;
+    }
+
     @Override
     public String toString() {
         return "=====Item Information====" + 
@@ -75,42 +95,16 @@ public abstract class LibraryItem {
 	           "\nItem Title: " + title +
                "\nItem Type:" + getItemType() +
                "\nBorrow Status" + getBorrowStatus() +
-	           "\nDate Last Borrowed: " + dateLastBorrowed +
-               "\nDate Last Returned:" + dateLastReturned +
                "\nDue Date:" + getDueDate() +
 			   "\n=========================";
     }
 
-    public BorrowStatus borrow() {
-    if (this.isBorrowed) {
-        return BorrowStatus.ALREADY_BORROWED;      
-    } else {
-    this.isBorrowed = true;
-    this.dateLastBorrowed = LocalDate.now();
-    this.setDueDate();
-    return BorrowStatus.BORROWED;
-    }
-}
-
-public BorrowStatus returnItem() {
-    if (!this.isBorrowed) {
-        return BorrowStatus.ALREADY_BORROWED;
-    }
-    else {
-    this.isBorrowed = false;
-    this.dateDue = null;   
-    this.dateLastReturned = LocalDate.now(); 
-    return BorrowStatus.RETURNED;
-    }
-}
 
     // abstract methods for loan duration, fees, renew rules.
 
-    public abstract void setDueDate();
-
     public abstract void setLateFee();
 
-    public abstract void renewRule();
+  
 
 
 }
