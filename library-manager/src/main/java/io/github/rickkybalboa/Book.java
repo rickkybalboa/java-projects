@@ -20,12 +20,12 @@ private String genre;
     }
 
 
-    public void getAuthor() {
-        System.out.println(author);
+    public String getAuthor() {
+        return author;
     }
 
-    public void getGenre() {
-        System.out.println(genre);
+    public String getGenre() {
+        return genre;
     }
 
 
@@ -33,11 +33,5 @@ private String genre;
     public void setLateFee() {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
-
-
- /*    @Override
-    public ItemType getItemType() {
-        return ItemType.BOOK;
-    } */
 }
 

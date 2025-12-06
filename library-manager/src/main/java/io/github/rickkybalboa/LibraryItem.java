@@ -5,12 +5,12 @@ import java.time.LocalDate;
 public abstract class LibraryItem {
 
     private final String id;
-    protected final String title;
+    private final String title;
     private final ItemType itemType;
-    protected boolean isBorrowed;
-    protected LocalDate dateLastBorrowed;
-    protected LocalDate dateDue;
-    protected LocalDate dateLastReturned;
+    protected boolean isBorrowed = false;
+    protected LocalDate dateLastBorrowed = null;
+    protected LocalDate dateDue = null;
+    protected LocalDate dateLastReturned = null;
     protected enum BorrowStatus {
         BORROWED, RETURNED, ALREADY_BORROWED, NO_CHANGE
     }
@@ -54,24 +54,30 @@ public abstract class LibraryItem {
 
     public BorrowStatus getBorrowStatus() {
         if (this.isBorrowed) {
-            return BorrowStatus.ALREADY_BORROWED;
+            return BorrowStatus.BORROWED;
         }
         else return BorrowStatus.RETURNED;
     }
 
     public boolean borrow() {
-        if(isBorrowed) return false;
+        if(isBorrowed) {
+            throw new IllegalStateException("Item is already borrowed");
+        } 
 
         LocalDate todayDate = LocalDate.now();
         dateDue = todayDate.plusDays(borrowingRule.getLoanPeriodDays());
+        dateLastBorrowed = LocalDate.now();
         isBorrowed = true;
         return true;
     }
 
     public boolean returnItem() {
-        if(!isBorrowed) return false;
+        if(!isBorrowed) {
+            throw new IllegalStateException("Item has not been borrowed.");
+        }
 
         dateDue = null;
+        dateLastReturned = LocalDate.now();
         isBorrowed = false;
         return true;
     }
@@ -93,8 +99,10 @@ public abstract class LibraryItem {
         return "=====Item Information====" + 
 	    	   "\nItem ID: " + id +
 	           "\nItem Title: " + title +
-               "\nItem Type:" + getItemType() +
-               "\nBorrow Status" + getBorrowStatus() +
+               "\nItem Type: " + getItemType() +
+               "\nBorrow Status: " + getBorrowStatus() +
+               "\nDate Last Borrowed: " + dateLastBorrowed +
+               "\nDate Last Returned: " + dateLastReturned +
                "\nDue Date:" + getDueDate() +
 			   "\n=========================";
     }

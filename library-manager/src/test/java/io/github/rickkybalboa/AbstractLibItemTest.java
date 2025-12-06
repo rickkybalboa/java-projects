@@ -12,6 +12,21 @@ public abstract class AbstractLibItemTest<T extends LibraryItem> {
 
 // Abstract factory method. Each concrete class overrides this method.
     protected abstract T createItemWith(String id);
+    @Test
+    void rejectDuplicateBorrow() {
+        T libItem = createItemWith("001");
+        libItem.borrow();
+        assertThrows(IllegalStateException.class, () -> libItem.borrow(),
+    "Borrow function should reject borrowing an already borrowed item");
+    }
+
+    @Test
+    void rejectInvalidReturn() {
+        T libItem = createItemWith("001");
+        
+        assertThrows(IllegalStateException.class, () -> libItem.returnItem(),
+    "Return function should reject returning unborrowed item");
+    }
 
     @Test
     void borrowSetsCorrectDueDate() {
