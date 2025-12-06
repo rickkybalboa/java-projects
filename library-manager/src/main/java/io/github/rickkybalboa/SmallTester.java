@@ -9,7 +9,7 @@ public class SmallTester {
         
     Book book1 = new Book("001","Mr.Blobbo", "The Book of Blobbo","Religious");
 
-    book1.getAuthor();
+    /* book1.getAuthor();
     book1.getGenre();
     book1.borrow();
     Helpers.print(LocalDate.now().toString());
@@ -28,5 +28,7 @@ public class SmallTester {
     Helpers.print(book1.getDueDate());
     Helpers.print(book1.getItemType());
 
-    }
+    } */
+   
+}
 }
